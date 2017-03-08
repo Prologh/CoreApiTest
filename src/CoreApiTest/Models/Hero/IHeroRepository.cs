@@ -6,7 +6,7 @@ namespace CoreApiTest.Models.Hero
     {
         IEnumerable<Hero> GetAll();
         Hero GetById(int key);
-        void Create(Hero item);
+        void Add(Hero item);
         void Update(Hero item);
         void Delete(int key);
     }

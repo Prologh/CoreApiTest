@@ -16,43 +16,33 @@ namespace CoreApiTest.Models.Hero
             _context = context;
         }
 
-        // GET api/<controller>
-        [HttpGet]
         public IEnumerable<Hero> GetAll()
         {
             return _context.HeroItems.ToList();
         }
 
-        // GET api/<controller>/{id}
-        [HttpGet("{id}")]
         public Hero GetById(int id)
         {
             return _context.HeroItems.FirstOrDefault(q => q.Id == id);
         }
 
-        // POST api/<controller>
-        [HttpPost]
-        public void Create(Hero item)
+        public void Add(Hero item)
         {
             _context.HeroItems.Add(item);
             _context.SaveChanges();
         }
 
-        // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public async void Update(Hero item)
+        public void Update(Hero item)
         {
-            //if ()
-
-            _context.HeroItems.Update(item);
-            //await _context.SaveChangesAsync(item);
+            _context.Update(item);
+            _context.SaveChanges();
         }
 
         // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
         public void Delete(int id)
         {
-
+            _context.HeroItems.Remove(_context.HeroItems.First(t => t.Id == id));
+            _context.SaveChanges();
         }
     }
 }
