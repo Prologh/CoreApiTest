@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using CoreApiTest.Models.Hero;
+using Microsoft.EntityFrameworkCore;
+
 namespace CoreApiTest
 {
     public class Startup
@@ -28,7 +31,12 @@ namespace CoreApiTest
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            //services.AddDbContext<HeroContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("HeroContext")));
+            services.AddDbContext<HeroContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+            services.AddTransient<IHeroRepository, HeroRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
