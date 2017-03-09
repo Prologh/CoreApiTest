@@ -20,16 +20,16 @@ namespace CoreApiTest.Controllers
 
         // GET api/<controller>
         [HttpGet(Name = "GetAllHeroes")]
-        public IEnumerable<Hero> GetAll()
+        public async Task<IEnumerable<Hero>> GetAll()
         {
-            return _heroItems.GetAll();
+            return await _heroItems.GetAll();
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetHero")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var item = _heroItems.GetById(id);
+            var item = await _heroItems.GetById(id);
             if (item == null)
             {
                 return NotFound();
@@ -39,45 +39,45 @@ namespace CoreApiTest.Controllers
 
         // POST api/<controller>
         [HttpPost(Name = "CreateHero")]
-        public IActionResult Create([FromBody] Hero item)
+        public async Task<IActionResult> Create([FromBody] Hero item)
         {
             if (item == null)
             {
                 return BadRequest();
             }
-            _heroItems.Add(item);
+            await _heroItems.Add(item);
             return CreatedAtRoute("GetHero", new { id = item.Id }, item);
         }
 
         // PUT api/<controller>
         [HttpPut("{id}", Name = "UpdateHero")]
-        public IActionResult Update(int id, [FromBody] Hero item)
+        public async Task<IActionResult> Update(int id, [FromBody] Hero item)
         {
             if (item == null)
             {
                 return BadRequest();
             }
-            var hero = _heroItems.GetById(id);
+            var hero = await _heroItems.GetById(id);
             if (hero == null)
             {
                 return NotFound();
             }
             hero.Name = item.Name;
             hero.IsRetired = item.IsRetired;
-            _heroItems.Update(hero);
+            await _heroItems.Update(hero);
             return Ok();
         }
 
         // DELETE api/<controller>/{id}
         [HttpDelete("{id}", Name = "DeleteHero")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var item = _heroItems.GetById(id);
+            var item = await _heroItems.GetById(id);
             if (item == null)
             {
                 return NotFound();
             }
-            _heroItems.Delete(id);
+            await _heroItems.Delete(id);
             return Ok();
         }
     }

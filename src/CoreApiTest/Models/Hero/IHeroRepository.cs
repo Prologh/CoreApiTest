@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoreApiTest.Models.Hero
 {
     public interface IHeroRepository
     {
-        IEnumerable<Hero> GetAll();
-        Hero GetById(int key);
-        void Add(Hero item);
-        void Update(Hero item);
-        void Delete(int key);
+        Task<IEnumerable<Hero>> GetAll();
+        Task<Hero> GetById(int key);
+        Task Add(Hero item);
+        Task Update(Hero item);
+        Task Delete(int key);
     }
 }

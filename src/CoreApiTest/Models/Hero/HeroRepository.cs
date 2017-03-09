@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreApiTest.Models.Hero
 {
@@ -16,33 +17,33 @@ namespace CoreApiTest.Models.Hero
             _context = context;
         }
 
-        public IEnumerable<Hero> GetAll()
+        public async Task<IEnumerable<Hero>> GetAll()
         {
-            return _context.HeroItems.ToList();
+            return await _context.HeroItems.ToListAsync();
         }
 
-        public Hero GetById(int id)
+        public async Task<Hero> GetById(int id)
         {
-            return _context.HeroItems.FirstOrDefault(q => q.Id == id);
+            return await _context.HeroItems.FirstOrDefaultAsync(q => q.Id == id);
         }
 
-        public void Add(Hero item)
+        public async Task Add(Hero item)
         {
             _context.HeroItems.Add(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Hero item)
+        public async Task Update(Hero item)
         {
             _context.Update(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _context.HeroItems.Remove(_context.HeroItems.First(t => t.Id == id));
-            _context.SaveChanges();
+            _context.HeroItems.Remove(await _context.HeroItems.FirstAsync(t => t.Id == id));
+            await _context.SaveChangesAsync();
         }
     }
 }
