@@ -46,7 +46,7 @@ namespace CoreApiTest.Controllers
                 return BadRequest();
             }
             await _heroItems.Add(item);
-            return CreatedAtRoute("GetHero", new { id = item.Id }, item);
+            return CreatedAtRoute("GetHero", new { id = item.HeroId }, item);
         }
 
         // PUT api/<controller>

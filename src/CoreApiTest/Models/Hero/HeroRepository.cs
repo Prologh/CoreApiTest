@@ -24,7 +24,7 @@ namespace CoreApiTest.Models.Hero
 
         public async Task<Hero> GetById(int id)
         {
-            return await _context.HeroItems.FirstOrDefaultAsync(q => q.Id == id);
+            return await _context.HeroItems.FirstOrDefaultAsync(q => q.HeroId == id);
         }
 
         public async Task Add(Hero item)
@@ -42,7 +42,7 @@ namespace CoreApiTest.Models.Hero
         // DELETE api/<controller>/5
         public async Task Delete(int id)
         {
-            _context.HeroItems.Remove(await _context.HeroItems.FirstAsync(t => t.Id == id));
+            _context.HeroItems.Remove(await _context.HeroItems.FirstAsync(t => t.HeroId == id));
             await _context.SaveChangesAsync();
         }
     }
