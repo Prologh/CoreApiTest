@@ -27,6 +27,6 @@ namespace CoreApiTest.Models.Hero
         /// <summary>
         /// A list of all Quests reffered to specific Hero.
         /// </summary>
-        public List<Quest.Quest> Quests { get; set; }
+        //public List<Quest.Quest> Quests { get; set; }
     }
 }

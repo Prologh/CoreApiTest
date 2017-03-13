@@ -8,7 +8,7 @@ using CoreApiTest.Models.Hero;
 namespace CoreApiTest.Migrations
 {
     [DbContext(typeof(HeroContext))]
-    [Migration("20170308135349_Hero")]
+    [Migration("20170313135455_Hero")]
     partial class Hero
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,14 +19,14 @@ namespace CoreApiTest.Migrations
 
             modelBuilder.Entity("CoreApiTest.Models.Hero.Hero", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("HeroId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsRetired");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("Id");
+                    b.HasKey("HeroId");
 
                     b.ToTable("HeroItems");
                 });
