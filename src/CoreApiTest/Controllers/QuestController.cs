@@ -64,9 +64,8 @@ namespace CoreApiTest.Controllers
             }
             Quest.Title = item.Title;
             Quest.IsCompleted = item.IsCompleted;
-            // TODO
-            // Czy robić update QuestOwner?
-            //Quest.QuestOwnerId = item.QuestOwnerId;
+            Quest.QuestOwnerId = item.QuestOwnerId;
+            Quest.Hero = item.Hero;
             await _QuestItems.Update(Quest);
             return Ok();
         }

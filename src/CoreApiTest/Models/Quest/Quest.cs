@@ -6,8 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using CoreApiTest.Models.Hero;
-
 namespace CoreApiTest.Models.Quest
 {
     public class Quest

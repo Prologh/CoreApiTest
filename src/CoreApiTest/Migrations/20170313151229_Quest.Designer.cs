@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using CoreApiTest.Models.Hero;
+using CoreApiTest.Data.Context;
 
 namespace CoreApiTest.Migrations
 {

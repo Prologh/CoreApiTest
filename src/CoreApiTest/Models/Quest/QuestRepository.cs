@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CoreApiTest.Models.Hero;
+
+using CoreApiTest.Data.Context;
 
 namespace CoreApiTest.Models.Quest
 {

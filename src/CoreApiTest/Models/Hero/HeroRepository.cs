@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using CoreApiTest.Data.Context;
+
 namespace CoreApiTest.Models.Hero
 {
     public class HeroRepository : IHeroRepository

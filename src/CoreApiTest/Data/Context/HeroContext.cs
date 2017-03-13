@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreApiTest.Models.Hero;
+using CoreApiTest.Models.Quest;
 
-namespace CoreApiTest.Models.Hero
+namespace CoreApiTest.Data.Context
 {
     public class HeroContext : DbContext
     {
@@ -19,7 +21,7 @@ namespace CoreApiTest.Models.Hero
         }
 
         public DbSet<Hero> HeroItems { get; set; }
-        public DbSet<Quest.Quest> QuestItems { get; set; }
+        public DbSet<Quest> QuestItems { get; set; }
 
     }
 }

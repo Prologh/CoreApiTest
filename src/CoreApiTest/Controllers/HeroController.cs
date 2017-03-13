@@ -64,6 +64,7 @@ namespace CoreApiTest.Controllers
             }
             hero.Name = item.Name;
             hero.IsRetired = item.IsRetired;
+            hero.Quests = item.Quests;
             await _heroItems.Update(hero);
             return Ok();
         }
