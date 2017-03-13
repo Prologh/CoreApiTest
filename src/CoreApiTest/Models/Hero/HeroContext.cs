@@ -19,6 +19,7 @@ namespace CoreApiTest.Models.Hero
         }
 
         public DbSet<Hero> HeroItems { get; set; }
+        public DbSet<Quest.Quest> QuestItems { get; set; }
 
     }
 }

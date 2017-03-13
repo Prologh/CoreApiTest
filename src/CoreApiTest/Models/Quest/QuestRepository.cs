@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using CoreApiTest.Models.Hero;
 
 namespace CoreApiTest.Models.Quest
 {
     public class QuestRepository : IQuestRepository
     {
 
-        private readonly QuestContext _context;
+        private readonly HeroContext _context;
 
-        public QuestRepository(QuestContext context)
+        public QuestRepository(HeroContext context)
         {
             _context = context;
         }
@@ -39,7 +40,6 @@ namespace CoreApiTest.Models.Quest
             await _context.SaveChangesAsync();
         }
 
-        // DELETE api/<controller>/5
         public async Task Delete(int id)
         {
             _context.QuestItems.Remove(await _context.QuestItems.FirstAsync(t => t.QuestId == id));

@@ -8,8 +8,8 @@ using CoreApiTest.Models.Hero;
 namespace CoreApiTest.Migrations
 {
     [DbContext(typeof(HeroContext))]
-    [Migration("20170313135455_Hero")]
-    partial class Hero
+    [Migration("20170313151229_Quest")]
+    partial class Quest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,32 @@ namespace CoreApiTest.Migrations
                     b.HasKey("HeroId");
 
                     b.ToTable("HeroItems");
+                });
+
+            modelBuilder.Entity("CoreApiTest.Models.Quest.Quest", b =>
+                {
+                    b.Property<int>("QuestId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsCompleted");
+
+                    b.Property<int>("QuestOwnerId");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("QuestId");
+
+                    b.HasIndex("QuestOwnerId");
+
+                    b.ToTable("QuestItems");
+                });
+
+            modelBuilder.Entity("CoreApiTest.Models.Quest.Quest", b =>
+                {
+                    b.HasOne("CoreApiTest.Models.Hero.Hero", "Hero")
+                        .WithMany("Quests")
+                        .HasForeignKey("QuestOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
