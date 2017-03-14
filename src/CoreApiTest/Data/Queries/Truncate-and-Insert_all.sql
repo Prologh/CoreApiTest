@@ -10,7 +10,7 @@ INSERT INTO [dbo].HeroItems (IsRetired, Name) VALUES
 	(1, 'Superman'),
 	(0, 'Lutrz');
 
-INSERT INTO[dbo].QuestItems (QuestOwnerId, IsCompleted, Title) VALUES
+INSERT INTO[dbo].QuestItems (IdHero, IsCompleted, Title) VALUES
 	(1, 0, 'Save yourself'),
 	(1, 1, 'Defeat Magneto'),
 	(2, 1, 'Listen to "Careless Whisper" by Wham!'),

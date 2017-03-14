@@ -26,7 +26,7 @@ namespace CoreApiTest.Controllers
         }
 
         // GET api/<controller>/{id}
-        [HttpGet("{id}", Name = "GetHero")]
+        [HttpGet("{id}", Name = "GetHeroById")]
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _heroItems.GetById(id);
@@ -35,6 +35,20 @@ namespace CoreApiTest.Controllers
                 return NotFound();
             }
             return new ObjectResult(item);
+        }
+
+        // GET api/<controller>/{id}/quest
+        [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
+        public async Task<IActionResult> GetAllHeroQuests(int id)
+        {
+            var item = await _heroItems.GetById(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(item);
+            //return new ObjectResult(item.Quests);
+            //return new ObjectResult(item.Quests.ToList());
         }
 
         // POST api/<controller>
@@ -46,7 +60,7 @@ namespace CoreApiTest.Controllers
                 return BadRequest();
             }
             await _heroItems.Add(item);
-            return CreatedAtRoute("GetHero", new { id = item.HeroId }, item);
+            return CreatedAtRoute("GetHeroById", new { id = item.IdHero }, item);
         }
 
         // PUT api/<controller>

@@ -26,7 +26,7 @@ namespace CoreApiTest.Controllers
         }
 
         // GET api/<controller>/{id}
-        [HttpGet("{id}", Name = "GetQuest")]
+        [HttpGet("{id}", Name = "GetQuestById")]
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _QuestItems.GetById(id);
@@ -46,7 +46,7 @@ namespace CoreApiTest.Controllers
                 return BadRequest();
             }
             await _QuestItems.Add(item);
-            return CreatedAtRoute("GetQuest", new { id = item.QuestId }, item);
+            return CreatedAtRoute("GetQuestById", new { id = item.IdQuest }, item);
         }
 
         // PUT api/<controller>
@@ -64,7 +64,7 @@ namespace CoreApiTest.Controllers
             }
             Quest.Title = item.Title;
             Quest.IsCompleted = item.IsCompleted;
-            Quest.QuestOwnerId = item.QuestOwnerId;
+            Quest.IdHero = item.IdHero;
             Quest.Hero = item.Hero;
             await _QuestItems.Update(Quest);
             return Ok();

@@ -15,13 +15,7 @@ namespace CoreApiTest.Data.Context
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-        }
-
         public DbSet<Hero> HeroItems { get; set; }
         public DbSet<Quest> QuestItems { get; set; }
-
     }
 }

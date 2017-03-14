@@ -11,27 +11,31 @@ namespace CoreApiTest.Models.Quest
     public class Quest
     {
         /// <summary>
-        /// Id for Quest.
+        /// Integer id of Quest.
         /// </summary>
         [Key]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int QuestId { get; set; }
+        public int IdQuest { get; set; }
         /// <summary>
-        /// Foreign key for Quest.
-        /// </summary>
-        public int QuestOwnerId { get; set; }
-        /// <summary>
-        /// A Hero object which Quest is (not always) reffering to.
-        /// </summary>
-        [ForeignKey("QuestOwnerId")]
-        public Hero.Hero Hero { get; set; }
-        /// <summary>
-        /// Title of Quest.
+        /// String title of Quest.
         /// </summary>
         public string Title { get; set; }
         /// <summary>
         /// A boolean value mapping if a Quest was completed or not.
         /// </summary>
         public bool IsCompleted { get; set; }
+
+        /// <summary>
+        /// Integer foreign key of Hero for Quest.
+        /// </summary>
+        public int IdHero { get; set; }
+        /// <summary>
+        /// Represtens Hero object which Quest is related to.
+        /// </summary>
+        [ForeignKey("IdHero")]
+        [DisplayFormat(NullDisplayText = "No_Owner")]
+        public virtual Hero.Hero Hero { get; set; }
+
     }
 }

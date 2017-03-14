@@ -26,7 +26,7 @@ namespace CoreApiTest.Models.Quest
 
         public async Task<Quest> GetById(int id)
         {
-            return await _context.QuestItems.FirstOrDefaultAsync(q => q.QuestId == id);
+            return await _context.QuestItems.FirstOrDefaultAsync(q => q.IdQuest == id);
         }
 
         public async Task Add(Quest item)
@@ -43,7 +43,7 @@ namespace CoreApiTest.Models.Quest
 
         public async Task Delete(int id)
         {
-            _context.QuestItems.Remove(await _context.QuestItems.FirstAsync(t => t.QuestId == id));
+            _context.QuestItems.Remove(await _context.QuestItems.FirstAsync(t => t.IdQuest == id));
             await _context.SaveChangesAsync();
         }
     }

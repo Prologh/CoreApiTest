@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CoreApiTest.Migrations
 {
-    public partial class Hero : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,41 +13,41 @@ namespace CoreApiTest.Migrations
                 name: "HeroItems",
                 columns: table => new
                 {
-                    HeroId = table.Column<int>(nullable: false)
+                    IdHero = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsRetired = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HeroItems", x => x.HeroId);
+                    table.PrimaryKey("PK_HeroItems", x => x.IdHero);
                 });
 
             migrationBuilder.CreateTable(
                 name: "QuestItems",
                 columns: table => new
                 {
-                    QuestId = table.Column<int>(nullable: false)
+                    IdQuest = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdHero = table.Column<int>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
-                    QuestOwnerId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestItems", x => x.QuestId);
+                    table.PrimaryKey("PK_QuestItems", x => x.IdQuest);
                     table.ForeignKey(
-                        name: "FK_QuestItems_HeroItems_QuestOwnerId",
-                        column: x => x.QuestOwnerId,
+                        name: "FK_QuestItems_HeroItems_IdHero",
+                        column: x => x.IdHero,
                         principalTable: "HeroItems",
-                        principalColumn: "HeroId",
+                        principalColumn: "IdHero",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestItems_QuestOwnerId",
+                name: "IX_QuestItems_IdHero",
                 table: "QuestItems",
-                column: "QuestOwnerId");
+                column: "IdHero");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

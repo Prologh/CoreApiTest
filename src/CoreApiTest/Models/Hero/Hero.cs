@@ -11,22 +11,25 @@ namespace CoreApiTest.Models.Hero
     public class Hero
     {
         /// <summary>
-        /// Id for Hero.
+        /// Integer id for Hero.
         /// </summary>
         [Key]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int HeroId { get; set; }
+        public int IdHero { get; set; }
         /// <summary>
-        /// The name of a Hero.
+        /// String name of a Hero.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Boolean value mapping if a Hero is already retired or not.
+        /// A oolean value mapping if a Hero is already retired or not.
         /// </summary>
         public bool IsRetired { get; set; }
+
         /// <summary>
         /// List of all Quests reffered to specific Hero.
         /// </summary>
-        public List<Quest.Quest> Quests { get; set; }
+        [DisplayFormat(NullDisplayText = "No_Quests")]
+        public virtual ICollection<Quest.Quest> Quests { get; set; }
     }
 }

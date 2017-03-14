@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-
 using CoreApiTest.Data.Context;
 
 namespace CoreApiTest.Migrations
@@ -19,32 +18,32 @@ namespace CoreApiTest.Migrations
 
             modelBuilder.Entity("CoreApiTest.Models.Hero.Hero", b =>
                 {
-                    b.Property<int>("HeroId")
+                    b.Property<int>("IdHero")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsRetired");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("HeroId");
+                    b.HasKey("IdHero");
 
                     b.ToTable("HeroItems");
                 });
 
             modelBuilder.Entity("CoreApiTest.Models.Quest.Quest", b =>
                 {
-                    b.Property<int>("QuestId")
+                    b.Property<int>("IdQuest")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("IdHero");
 
                     b.Property<bool>("IsCompleted");
 
-                    b.Property<int>("QuestOwnerId");
-
                     b.Property<string>("Title");
 
-                    b.HasKey("QuestId");
+                    b.HasKey("IdQuest");
 
-                    b.HasIndex("QuestOwnerId");
+                    b.HasIndex("IdHero");
 
                     b.ToTable("QuestItems");
                 });
@@ -53,7 +52,7 @@ namespace CoreApiTest.Migrations
                 {
                     b.HasOne("CoreApiTest.Models.Hero.Hero", "Hero")
                         .WithMany("Quests")
-                        .HasForeignKey("QuestOwnerId")
+                        .HasForeignKey("IdHero")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
