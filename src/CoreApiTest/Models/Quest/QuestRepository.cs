@@ -31,19 +31,42 @@ namespace CoreApiTest.Models.Quest
 
         public async Task Add(Quest item)
         {
+            var hero = await _context.HeroItems.FirstOrDefaultAsync(h => h.IdHero == item.IdHero);
+            if (hero != null)
+            {
+                hero.Quests.Add(item);
+                //if (item.Hero == null)
+                //{
+                //    item.Hero = hero;
+                //}
+            }
             _context.QuestItems.Add(item);
+            _context.Update(hero);
             await _context.SaveChangesAsync();
         }
 
         public async Task Update(Quest item)
         {
-            _context.Update(item);
+            var hero = await _context.HeroItems.FirstOrDefaultAsync(h => h.IdHero == item.IdHero);
+            if (hero != null)
+            {
+                hero.Quests.Add(item);
+                _context.Update(hero);
+            }
+            _context.QuestItems.Add(item);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            _context.QuestItems.Remove(await _context.QuestItems.FirstAsync(t => t.IdQuest == id));
+            var hero = await _context.HeroItems.FirstOrDefaultAsync(h => h.IdHero == id);
+            var quest = await _context.QuestItems.FirstOrDefaultAsync(t => t.IdQuest == id);
+            if (hero != null)
+            {
+                hero.Quests.Remove(quest);
+                _context.HeroItems.Update(hero);
+            }
+            _context.QuestItems.Remove(quest);
             await _context.SaveChangesAsync();
         }
     }

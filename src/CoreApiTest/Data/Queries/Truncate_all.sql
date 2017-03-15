@@ -1,5 +1,5 @@
 ﻿DELETE FROM [dbo].QuestItems;
-DBCC CHECKIDENT ('dbo.QuestItems', RESEED, 1);
+DBCC CHECKIDENT ('dbo.QuestItems', RESEED, 0);
 
 DELETE FROM [dbo].HeroItems;
-DBCC CHECKIDENT ('dbo.HeroItems', RESEED, 1);
+DBCC CHECKIDENT ('dbo.HeroItems', RESEED, 0);

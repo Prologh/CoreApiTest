@@ -29,13 +29,11 @@ namespace CoreApiTest.Models.Quest
         /// <summary>
         /// Integer foreign key of Hero for Quest.
         /// </summary>
+        [ForeignKey("IdHero")]
         public int IdHero { get; set; }
         /// <summary>
-        /// Represtens Hero object which Quest is related to.
+        /// Hero object which Quest is reffered to.
         /// </summary>
-        [ForeignKey("IdHero")]
-        [DisplayFormat(NullDisplayText = "No_Owner")]
-        public virtual Hero.Hero Hero { get; set; }
-
+        public Hero.Hero Hero { get; set; }
     }
 }

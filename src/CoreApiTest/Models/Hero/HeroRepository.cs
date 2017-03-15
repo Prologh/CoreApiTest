@@ -41,7 +41,6 @@ namespace CoreApiTest.Models.Hero
             await _context.SaveChangesAsync();
         }
 
-        // DELETE api/<controller>/5
         public async Task Delete(int id)
         {
             _context.HeroItems.Remove(await _context.HeroItems.FirstAsync(t => t.IdHero == id));

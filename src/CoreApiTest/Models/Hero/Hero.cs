@@ -10,6 +10,11 @@ namespace CoreApiTest.Models.Hero
 {
     public class Hero
     {
+        public Hero()
+        {
+            Quests = new List<Quest.Quest>();
+        }
+
         /// <summary>
         /// Integer id for Hero.
         /// </summary>
@@ -30,6 +35,6 @@ namespace CoreApiTest.Models.Hero
         /// List of all Quests reffered to specific Hero.
         /// </summary>
         [DisplayFormat(NullDisplayText = "No_Quests")]
-        public virtual ICollection<Quest.Quest> Quests { get; set; }
+        public virtual List<Quest.Quest> Quests { get; set; }
     }
 }

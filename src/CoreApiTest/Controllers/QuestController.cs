@@ -65,7 +65,7 @@ namespace CoreApiTest.Controllers
             Quest.Title = item.Title;
             Quest.IsCompleted = item.IsCompleted;
             Quest.IdHero = item.IdHero;
-            Quest.Hero = item.Hero;
+
             await _QuestItems.Update(Quest);
             return Ok();
         }

@@ -15,6 +15,15 @@ namespace CoreApiTest.Data.Context
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            //builder.Entity<Hero>()
+
+            //    .HasOne(q => q.Quests)
+            //    .WithOne(h => h.Owner);
+        }
+
         public DbSet<Hero> HeroItems { get; set; }
         public DbSet<Quest> QuestItems { get; set; }
     }

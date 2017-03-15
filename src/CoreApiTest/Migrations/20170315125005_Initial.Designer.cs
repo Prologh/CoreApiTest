@@ -8,7 +8,7 @@ using CoreApiTest.Data.Context;
 namespace CoreApiTest.Migrations
 {
     [DbContext(typeof(HeroContext))]
-    [Migration("20170314085848_Initial")]
+    [Migration("20170315125005_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
