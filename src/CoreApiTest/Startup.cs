@@ -34,6 +34,7 @@ namespace CoreApiTest
             services.AddDbContext<HeroContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Localhost")));
             services.AddMvc();
+
             services.AddTransient<IHeroRepository, HeroRepository>();
             services.AddTransient<IQuestRepository, QuestRepository>();
         }

@@ -35,13 +35,13 @@ namespace CoreApiTest.Models.Quest
             if (hero != null)
             {
                 hero.Quests.Add(item);
-                //if (item.Hero == null)
-                //{
-                //    item.Hero = hero;
-                //}
+                _context.Update(hero);
+                if (item.Hero == null)
+                {
+                    item.Hero = hero;
+                }
             }
             _context.QuestItems.Add(item);
-            _context.Update(hero);
             await _context.SaveChangesAsync();
         }
 

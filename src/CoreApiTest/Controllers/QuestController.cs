@@ -46,6 +46,7 @@ namespace CoreApiTest.Controllers
                 return BadRequest();
             }
             await _QuestItems.Add(item);
+            //return CreatedAtRoute("GetQuestById", new { id = item.IdQuest });
             return CreatedAtRoute("GetQuestById", new { id = item.IdQuest }, item);
         }
 
