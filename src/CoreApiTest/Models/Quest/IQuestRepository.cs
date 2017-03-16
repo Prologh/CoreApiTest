@@ -5,10 +5,10 @@ namespace CoreApiTest.Models.Quest
 {
     public interface IQuestRepository
     {
-        Task<IEnumerable<Quest>> GetAll();
-        Task<Quest> GetById(int key);
+        Task<List<Quest>> GetAll();
+        Task<Quest> GetById(int? key);
         Task Add(Quest item);
         Task Update(Quest item);
-        Task Delete(int key);
+        Task Delete(Quest item);
     }
 }

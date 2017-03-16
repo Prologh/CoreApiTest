@@ -80,7 +80,7 @@ namespace CoreApiTest.Controllers
             {
                 return NotFound();
             }
-            await _QuestItems.Delete(id);
+            await _QuestItems.Delete(item);
             return Ok();
         }
     }

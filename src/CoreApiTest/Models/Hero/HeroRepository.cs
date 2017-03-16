@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using CoreApiTest.Data.Context;
+using CoreApiTest.Services;
 
 namespace CoreApiTest.Models.Hero
 {
@@ -21,12 +22,12 @@ namespace CoreApiTest.Models.Hero
 
         public async Task<IEnumerable<Hero>> GetAll()
         {
-            return await _context.HeroItems.ToListAsync();
+            return await _context.HeroFull().ToListAsync();
         }
 
         public async Task<Hero> GetById(int id)
         {
-            return await _context.HeroItems.FirstOrDefaultAsync(q => q.IdHero == id);
+            return await _context.HeroFull().FirstOrDefaultAsync(q => q.IdHero == id);
         }
 
         public async Task Add(Hero item)
@@ -37,13 +38,13 @@ namespace CoreApiTest.Models.Hero
 
         public async Task Update(Hero item)
         {
-            _context.Update(item);
+            _context.HeroItems.Update(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Hero item)
         {
-            _context.HeroItems.Remove(await _context.HeroItems.FirstAsync(t => t.IdHero == id));
+            _context.HeroItems.Remove(item);
             await _context.SaveChangesAsync();
         }
     }

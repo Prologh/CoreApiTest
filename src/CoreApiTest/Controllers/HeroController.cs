@@ -46,9 +46,7 @@ namespace CoreApiTest.Controllers
             {
                 return NotFound();
             }
-            return new ObjectResult(item);
-            //return new ObjectResult(item.Quests);
-            //return new ObjectResult(item.Quests.ToList());
+            return new ObjectResult(item.Quests);
         }
 
         // POST api/<controller>
@@ -78,7 +76,7 @@ namespace CoreApiTest.Controllers
             }
             hero.Name = item.Name;
             hero.IsRetired = item.IsRetired;
-            hero.Quests = item.Quests;
+
             await _heroItems.Update(hero);
             return Ok();
         }
@@ -92,7 +90,7 @@ namespace CoreApiTest.Controllers
             {
                 return NotFound();
             }
-            await _heroItems.Delete(id);
+            await _heroItems.Delete(item);
             return Ok();
         }
     }

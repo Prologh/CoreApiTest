@@ -9,6 +9,6 @@ namespace CoreApiTest.Models.Hero
         Task<Hero> GetById(int key);
         Task Add(Hero item);
         Task Update(Hero item);
-        Task Delete(int key);
+        Task Delete(Hero item);
     }
 }
