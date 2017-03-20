@@ -3,17 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreApiTest.Models.Hero;
-using CoreApiTest.Models.Quest;
+using CoreApiTest.Models;
 
 namespace CoreApiTest.Data.Context
 {
-    public class HeroContext : DbContext
+    public class ApiDbContext : DbContext
     {
-        public HeroContext(DbContextOptions<HeroContext> options)
-            : base(options)
-        {
-        }
+        public DbSet<Hero> HeroItems { get; set; }
+        public DbSet<Quest> QuestItems { get; set; }
+
+        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -23,8 +22,5 @@ namespace CoreApiTest.Data.Context
             //    .HasOne(q => q.Quests)
             //    .WithOne(h => h.Owner);
         }
-
-        public DbSet<Hero> HeroItems { get; set; }
-        public DbSet<Quest> QuestItems { get; set; }
     }
 }

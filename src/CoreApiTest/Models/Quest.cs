@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreApiTest.Models.Quest
+namespace CoreApiTest.Models
 {
-    public class Quest
+    public class Quest : IEntityBase
     {
         /// <summary>
         /// Integer id of Quest.
@@ -16,7 +16,7 @@ namespace CoreApiTest.Models.Quest
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdQuest { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// String title of Quest.
         /// </summary>
@@ -29,11 +29,11 @@ namespace CoreApiTest.Models.Quest
         /// <summary>
         /// Integer foreign key of Hero for Quest.
         /// </summary>
-        [ForeignKey("IdHero")]
         public int? IdHero { get; set; }
         /// <summary>
         /// Hero object which Quest is reffered to.
         /// </summary>
-        public Hero.Hero Hero { get; set; }
+        [ForeignKey("IdHero")]
+        public Hero Hero { get; set; }
     }
 }

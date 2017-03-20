@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreApiTest.Models.Hero
+namespace CoreApiTest.Models
 {
-    public class Hero
+    public class Hero : IEntityBase
     {
         public Hero()
         {
-            Quests = new List<Quest.Quest>();
+            Quests = new List<Quest>();
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace CoreApiTest.Models.Hero
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int IdHero { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// String name of a Hero.
         /// </summary>
@@ -35,6 +35,6 @@ namespace CoreApiTest.Models.Hero
         /// List of all Quests reffered to specific Hero.
         /// </summary>
         [DisplayFormat(NullDisplayText = "No_Quests")]
-        public virtual List<Quest.Quest> Quests { get; set; }
+        public List<Quest> Quests { get; set; }
     }
 }

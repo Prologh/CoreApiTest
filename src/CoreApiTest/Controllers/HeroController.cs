@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using CoreApiTest.Models.Hero;
+using CoreApiTest.Models;
+using CoreApiTest.Repositories.Abstract;
 
 namespace CoreApiTest.Controllers
 {
@@ -22,14 +23,14 @@ namespace CoreApiTest.Controllers
         [HttpGet(Name = "GetAllHeroes")]
         public async Task<IEnumerable<Hero>> GetAll()
         {
-            return await _heroItems.GetAll();
+            return await _heroItems.AllIncluding();
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetHeroById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _heroItems.GetById(id);
+            var item = await _heroItems.GetSingle(id);
             if (item == null)
             {
                 return NotFound();
@@ -41,7 +42,7 @@ namespace CoreApiTest.Controllers
         [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
         public async Task<IActionResult> GetAllHeroQuests(int id)
         {
-            var item = await _heroItems.GetById(id);
+            var item = await _heroItems.GetSingle(id);
             if (item == null)
             {
                 return NotFound();
@@ -57,8 +58,10 @@ namespace CoreApiTest.Controllers
             {
                 return BadRequest();
             }
-            await _heroItems.Add(item);
-            return CreatedAtRoute("GetHeroById", new { id = item.IdHero }, item);
+            _heroItems.Add(item);
+            await _heroItems.Commit();
+            return CreatedAtRoute("GetHeroById",
+                new { controller = "Hero", id = item.Id }, item);
         }
 
         // PUT api/<controller>
@@ -69,15 +72,15 @@ namespace CoreApiTest.Controllers
             {
                 return BadRequest();
             }
-            var hero = await _heroItems.GetById(id);
+            var hero = await _heroItems.GetSingle(id);
             if (hero == null)
             {
                 return NotFound();
             }
             hero.Name = item.Name;
             hero.IsRetired = item.IsRetired;
-
-            await _heroItems.Update(hero);
+            _heroItems.Update(hero);
+            await _heroItems.Commit();
             return Ok();
         }
 
@@ -85,12 +88,13 @@ namespace CoreApiTest.Controllers
         [HttpDelete("{id}", Name = "DeleteHero")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _heroItems.GetById(id);
+            var item = await _heroItems.GetSingle(id);
             if (item == null)
             {
                 return NotFound();
             }
-            await _heroItems.Delete(item);
+            _heroItems.Delete(item);
+            await _heroItems.Commit();
             return Ok();
         }
     }

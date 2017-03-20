@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-using CoreApiTest.Models.Hero;
-using CoreApiTest.Models.Quest;
+using CoreApiTest.Repositories;
+using CoreApiTest.Repositories.Abstract;
 using CoreApiTest.Data.Context;
 
 namespace CoreApiTest
@@ -31,7 +31,7 @@ namespace CoreApiTest
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HeroContext>(options =>
+            services.AddDbContext<ApiDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Localhost")));
             services.AddMvc();
 
