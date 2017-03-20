@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using CoreApiTest.Models.Quest;
+using CoreApiTest.Models;
+using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.Services;
 
 namespace CoreApiTest.Controllers
 {
@@ -12,24 +14,24 @@ namespace CoreApiTest.Controllers
     public class QuestController : Controller
     {
 
-        public QuestController(IQuestRepository QuestItems)
+        public QuestController(IQuestRepository questItems)
         {
-            _QuestItems = QuestItems;
+            _questItems = questItems;
         }
-        private IQuestRepository _QuestItems { get; set; }
+        private IQuestRepository _questItems { get; set; }
 
         // GET api/<controller>
         [HttpGet(Name = "GetAllQuestes")]
         public async Task<IEnumerable<Quest>> GetAll()
         {
-            return await _QuestItems.GetAll();
+            return await _questItems.GetAll();
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetQuestById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _QuestItems.GetById(id);
+            var item = await _questItems.GetSingle(id);
             if (item == null)
             {
                 return NotFound();
@@ -45,9 +47,10 @@ namespace CoreApiTest.Controllers
             {
                 return BadRequest();
             }
-            await _QuestItems.Add(item);
-            //return CreatedAtRoute("GetQuestById", new { id = item.IdQuest });
-            return CreatedAtRoute("GetQuestById", new { id = item.IdQuest }, item);
+             _questItems.Add(item);
+            await _questItems.Commit();
+            return CreatedAtRoute("GetQuestById",
+                new { controller = "Quest", id = item.Id }, item);
         }
 
         // PUT api/<controller>
@@ -58,16 +61,17 @@ namespace CoreApiTest.Controllers
             {
                 return BadRequest();
             }
-            var Quest = await _QuestItems.GetById(id);
-            if (Quest == null)
+            var quest = await _questItems.GetSingle(id);
+            if (quest == null)
             {
                 return NotFound();
             }
-            Quest.Title = item.Title;
-            Quest.IsCompleted = item.IsCompleted;
-            Quest.IdHero = item.IdHero;
+            quest.Title = item.Title;
+            quest.IsCompleted = item.IsCompleted;
+            quest.IdHero = item.IdHero;
 
-            await _QuestItems.Update(Quest);
+            _questItems.Update(quest);
+            await _questItems.Commit();
             return Ok();
         }
 
@@ -75,12 +79,13 @@ namespace CoreApiTest.Controllers
         [HttpDelete("{id}", Name = "DeleteQuest")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _QuestItems.GetById(id);
+            var item = await _questItems.GetSingle(id);
             if (item == null)
             {
                 return NotFound();
             }
-            await _QuestItems.Delete(item);
+            _questItems.Delete(item);
+            await _questItems.Commit();
             return Ok();
         }
     }

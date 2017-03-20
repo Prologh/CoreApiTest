@@ -13,35 +13,35 @@ namespace CoreApiTest.Migrations
                 name: "HeroItems",
                 columns: table => new
                 {
-                    IdHero = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsRetired = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HeroItems", x => x.IdHero);
+                    table.PrimaryKey("PK_HeroItems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "QuestItems",
                 columns: table => new
                 {
-                    IdQuest = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdHero = table.Column<int>(nullable: false),
+                    IdHero = table.Column<int>(nullable: true),
                     IsCompleted = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestItems", x => x.IdQuest);
+                    table.PrimaryKey("PK_QuestItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_QuestItems_HeroItems_IdHero",
                         column: x => x.IdHero,
                         principalTable: "HeroItems",
-                        principalColumn: "IdHero",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

@@ -7,54 +7,52 @@ using CoreApiTest.Data.Context;
 
 namespace CoreApiTest.Migrations
 {
-    [DbContext(typeof(HeroContext))]
-    [Migration("20170315125005_Initial")]
-    partial class Initial
+    [DbContext(typeof(ApiDbContext))]
+    partial class ApiDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CoreApiTest.Models.Hero.Hero", b =>
+            modelBuilder.Entity("CoreApiTest.Models.Hero", b =>
                 {
-                    b.Property<int>("IdHero")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsRetired");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("IdHero");
+                    b.HasKey("Id");
 
                     b.ToTable("HeroItems");
                 });
 
-            modelBuilder.Entity("CoreApiTest.Models.Quest.Quest", b =>
+            modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
                 {
-                    b.Property<int>("IdQuest")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("IdHero");
+                    b.Property<int?>("IdHero");
 
                     b.Property<bool>("IsCompleted");
 
                     b.Property<string>("Title");
 
-                    b.HasKey("IdQuest");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdHero");
 
                     b.ToTable("QuestItems");
                 });
 
-            modelBuilder.Entity("CoreApiTest.Models.Quest.Quest", b =>
+            modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
                 {
-                    b.HasOne("CoreApiTest.Models.Hero.Hero", "Hero")
+                    b.HasOne("CoreApiTest.Models.Hero", "Hero")
                         .WithMany("Quests")
-                        .HasForeignKey("IdHero")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("IdHero");
                 });
         }
     }
