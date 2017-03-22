@@ -24,17 +24,22 @@ namespace CoreApiTest.Controllers
         [HttpGet(Name = "GetAllQuestes")]
         public async Task<IEnumerable<Quest>> GetAll()
         {
-            return await _questItems.GetAll();
+            //return await _questItems.GetAll();
+            IEnumerable<Quest> questList = await _questItems.AllIncluding(q => q.Hero);
+            IEnumerable<Quest> questList2 = await _questItems.AllIncluding();
+            IEnumerable<Quest> questList3 = await _questItems.GetAll();
+            return questList;
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetQuestById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _questItems.GetSingle(id);
+            var item = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
+            //var item = await _questItems.GetSingle(id);
             if (item == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             return new ObjectResult(item);
         }
@@ -43,36 +48,42 @@ namespace CoreApiTest.Controllers
         [HttpPost(Name = "CreateQuest")]
         public async Task<IActionResult> Create([FromBody] Quest item)
         {
-            if (item == null)
+            if (!ModelState.IsValid || item == null)
             {
-                return BadRequest();
+                return new BadRequestResult();
             }
-             _questItems.Add(item);
+            var newQuest = new Quest()
+            {
+                Title = item.Title,
+                IsCompleted = item.IsCompleted,
+                HeroId = item.HeroId,
+            };
+             _questItems.Add(newQuest);
             await _questItems.Commit();
-            return CreatedAtRoute("GetQuestById",
-                new { controller = "Quest", id = item.Id }, item);
+            return new CreatedAtRouteResult("GetQuestById",
+                new { controller = "Quest", id = item.Id }, newQuest);
         }
 
         // PUT api/<controller>
         [HttpPut("{id}", Name = "UpdateQuest")]
         public async Task<IActionResult> Update(int id, [FromBody] Quest item)
         {
-            if (item == null)
+            if (!ModelState.IsValid || item == null)
             {
-                return BadRequest();
+                return new BadRequestResult();
             }
             var quest = await _questItems.GetSingle(id);
             if (quest == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             quest.Title = item.Title;
             quest.IsCompleted = item.IsCompleted;
-            quest.IdHero = item.IdHero;
+            quest.HeroId = item.HeroId;
 
             _questItems.Update(quest);
             await _questItems.Commit();
-            return Ok();
+            return new OkResult();
         }
 
         // DELETE api/<controller>/{id}
@@ -82,11 +93,11 @@ namespace CoreApiTest.Controllers
             var item = await _questItems.GetSingle(id);
             if (item == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             _questItems.Delete(item);
             await _questItems.Commit();
-            return Ok();
+            return new OkResult();
         }
     }
 }

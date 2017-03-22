@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,35 @@ namespace CoreApiTest.Data.Context
 
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            //builder.Entity<Hero>()
+            foreach (var relationship in modelBuilder
+                .Model
+                .GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
-            //    .HasOne(q => q.Quests)
-            //    .WithOne(h => h.Owner);
+            modelBuilder.Entity<Quest>()
+                .ToTable("Quest");
+
+            modelBuilder.Entity<Quest>()
+                .Property(q => q.HeroId)
+                .IsRequired();
+
+            modelBuilder.Entity<Quest>()
+                .HasOne(q => q.Hero)
+                .WithMany(h => h.Quests);
+
+            modelBuilder.Entity<Hero>()
+                .ToTable("Hero");
+
+            modelBuilder.Entity<Hero>()
+                .Property(h => h.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+
         }
     }
 }

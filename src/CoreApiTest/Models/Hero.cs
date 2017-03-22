@@ -18,13 +18,15 @@ namespace CoreApiTest.Models
         /// <summary>
         /// Integer id for Hero.
         /// </summary>
-        [Key]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key]
+        //[Required]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         /// <summary>
         /// String name of a Hero.
         /// </summary>
+        //[Required]
+        //[MaxLength(length: 100)]
         public string Name { get; set; }
         /// <summary>
         /// A oolean value mapping if a Hero is already retired or not.
@@ -34,7 +36,6 @@ namespace CoreApiTest.Models
         /// <summary>
         /// List of all Quests reffered to specific Hero.
         /// </summary>
-        [DisplayFormat(NullDisplayText = "No_Quests")]
-        public List<Quest> Quests { get; set; }
+        public ICollection<Quest> Quests { get; set; }
     }
 }

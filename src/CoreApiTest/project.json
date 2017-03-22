@@ -42,7 +42,11 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "System.Linq": "4.3.0",
+    "System.Interactive.Async": "3.0.0",
+    "System.Linq.Queryable": "4.3.0",
+    "System.Linq.Parallel": "4.3.0"
   },
 
   "tools": {

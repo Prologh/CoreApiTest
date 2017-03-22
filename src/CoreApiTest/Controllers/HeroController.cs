@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using CoreApiTest.Models;
 using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.Data.Context;
 
 namespace CoreApiTest.Controllers
 {
@@ -23,17 +24,21 @@ namespace CoreApiTest.Controllers
         [HttpGet(Name = "GetAllHeroes")]
         public async Task<IEnumerable<Hero>> GetAll()
         {
-            return await _heroItems.AllIncluding();
+            var heroesIncldued = await _heroItems.AllIncluding(h => h.Quests);
+
+            return heroesIncldued;
+            //return await _heroItems.GetAll();
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetHeroById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _heroItems.GetSingle(id);
+            //var item = await _heroItems.GetSingle(id);
+            var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
             if (item == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             return new ObjectResult(item);
         }
@@ -42,10 +47,10 @@ namespace CoreApiTest.Controllers
         [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
         public async Task<IActionResult> GetAllHeroQuests(int id)
         {
-            var item = await _heroItems.GetSingle(id);
+            var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
             if (item == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             return new ObjectResult(item.Quests);
         }
@@ -54,31 +59,37 @@ namespace CoreApiTest.Controllers
         [HttpPost(Name = "CreateHero")]
         public async Task<IActionResult> Create([FromBody] Hero item)
         {
-            if (item == null)
+            if (!ModelState.IsValid || item == null)
             {
-                return BadRequest();
+                return new BadRequestResult();
             }
-            _heroItems.Add(item);
+            var newHero = new Hero()
+            {
+                Name = item.Name,
+                IsRetired = item.IsRetired,
+            };
+            _heroItems.Add(newHero);
             await _heroItems.Commit();
             return CreatedAtRoute("GetHeroById",
-                new { controller = "Hero", id = item.Id }, item);
+                new { controller = "Hero", id = item.Id }, newHero);
         }
 
         // PUT api/<controller>
         [HttpPut("{id}", Name = "UpdateHero")]
         public async Task<IActionResult> Update(int id, [FromBody] Hero item)
         {
-            if (item == null)
+            if (!ModelState.IsValid || item == null)
             {
-                return BadRequest();
+                return new BadRequestResult();
             }
             var hero = await _heroItems.GetSingle(id);
             if (hero == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             hero.Name = item.Name;
             hero.IsRetired = item.IsRetired;
+
             _heroItems.Update(hero);
             await _heroItems.Commit();
             return Ok();
@@ -91,7 +102,7 @@ namespace CoreApiTest.Controllers
             var item = await _heroItems.GetSingle(id);
             if (item == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             _heroItems.Delete(item);
             await _heroItems.Commit();

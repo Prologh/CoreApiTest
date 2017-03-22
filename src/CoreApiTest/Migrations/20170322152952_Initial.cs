@@ -10,53 +10,53 @@ namespace CoreApiTest.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "HeroItems",
+                name: "Hero",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsRetired = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HeroItems", x => x.Id);
+                    table.PrimaryKey("PK_Hero", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestItems",
+                name: "Quest",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdHero = table.Column<int>(nullable: true),
+                    HeroId = table.Column<int>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestItems", x => x.Id);
+                    table.PrimaryKey("PK_Quest", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuestItems_HeroItems_IdHero",
-                        column: x => x.IdHero,
-                        principalTable: "HeroItems",
+                        name: "FK_Quest_Hero_HeroId",
+                        column: x => x.HeroId,
+                        principalTable: "Hero",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestItems_IdHero",
-                table: "QuestItems",
-                column: "IdHero");
+                name: "IX_Quest_HeroId",
+                table: "Quest",
+                column: "HeroId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "QuestItems");
+                name: "Quest");
 
             migrationBuilder.DropTable(
-                name: "HeroItems");
+                name: "Hero");
         }
     }
 }

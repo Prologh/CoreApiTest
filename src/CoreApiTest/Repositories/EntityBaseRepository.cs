@@ -40,7 +40,9 @@ namespace CoreApiTest.Repositories
             {
                 query = query.Include(includeProperty);
             }
-            return await query.ToListAsync();
+            var list = await query.ToListAsync();
+            var x = list.Count;
+            return list;
         }
 
         public async Task<T> GetSingle(int id)

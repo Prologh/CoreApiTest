@@ -23,11 +23,13 @@ namespace CoreApiTest.Migrations
 
                     b.Property<bool>("IsRetired");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 100);
 
                     b.HasKey("Id");
 
-                    b.ToTable("HeroItems");
+                    b.ToTable("Hero");
                 });
 
             modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
@@ -35,7 +37,7 @@ namespace CoreApiTest.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("IdHero");
+                    b.Property<int>("HeroId");
 
                     b.Property<bool>("IsCompleted");
 
@@ -43,16 +45,16 @@ namespace CoreApiTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdHero");
+                    b.HasIndex("HeroId");
 
-                    b.ToTable("QuestItems");
+                    b.ToTable("Quest");
                 });
 
             modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
                 {
                     b.HasOne("CoreApiTest.Models.Hero", "Hero")
                         .WithMany("Quests")
-                        .HasForeignKey("IdHero");
+                        .HasForeignKey("HeroId");
                 });
         }
     }
