@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using CoreApiTest.Models;
 using CoreApiTest.Repositories.Abstract;
-using CoreApiTest.Data.Context;
+using AutoMapper;
+using CoreApiTest.ViewModels;
 
 namespace CoreApiTest.Controllers
 {
@@ -22,20 +23,22 @@ namespace CoreApiTest.Controllers
 
         // GET api/<controller>
         [HttpGet(Name = "GetAllHeroes")]
-        public async Task<IEnumerable<Hero>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var heroesIncldued = await _heroItems.AllIncluding(h => h.Quests);
-
-            return heroesIncldued;
+            //return await _heroItems.AllIncluding(h => h.Quests)
             //return await _heroItems.GetAll();
+
+            var heroList = await _heroItems.AllIncluding(h => h.Quests);
+            var heroListVM = Mapper.Map<IEnumerable<Hero>, IEnumerable<HeroViewModel>>(heroList);
+            return new OkObjectResult(heroListVM);
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetHeroById")]
         public async Task<IActionResult> GetById(int id)
         {
-            //var item = await _heroItems.GetSingle(id);
-            var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
+            var item = await _heroItems.GetSingle(id);
+            //var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
             if (item == null)
             {
                 return new NotFoundResult();
@@ -47,7 +50,8 @@ namespace CoreApiTest.Controllers
         [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
         public async Task<IActionResult> GetAllHeroQuests(int id)
         {
-            var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
+            //var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
+            var item = await _heroItems.GetSingle(id);
             if (item == null)
             {
                 return new NotFoundResult();

@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using CoreApiTest.Models;
 using CoreApiTest.Repositories.Abstract;
-using CoreApiTest.Services;
+using AutoMapper;
+using CoreApiTest.ViewModels;
 
 namespace CoreApiTest.Controllers
 {
@@ -22,21 +23,22 @@ namespace CoreApiTest.Controllers
 
         // GET api/<controller>
         [HttpGet(Name = "GetAllQuestes")]
-        public async Task<IEnumerable<Quest>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             //return await _questItems.GetAll();
-            IEnumerable<Quest> questList = await _questItems.AllIncluding(q => q.Hero);
-            IEnumerable<Quest> questList2 = await _questItems.AllIncluding();
-            IEnumerable<Quest> questList3 = await _questItems.GetAll();
-            return questList;
+            //return await _questItems.AllIncluding(q => q.Hero);
+
+            var questList = await _questItems.GetAll();
+            var questListVM = Mapper.Map<IEnumerable<Quest>, IEnumerable<QuestViewModel>>(questList);
+            return new OkObjectResult(questListVM);
         }
 
         // GET api/<controller>/{id}
         [HttpGet("{id}", Name = "GetQuestById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
-            //var item = await _questItems.GetSingle(id);
+            //var item = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
+            var item = await _questItems.GetSingle(id);
             if (item == null)
             {
                 return new NotFoundResult();

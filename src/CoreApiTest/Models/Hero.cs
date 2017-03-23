@@ -29,7 +29,7 @@ namespace CoreApiTest.Models
         //[MaxLength(length: 100)]
         public string Name { get; set; }
         /// <summary>
-        /// A oolean value mapping if a Hero is already retired or not.
+        /// A boolean value mapping if a Hero is already retired or not.
         /// </summary>
         public bool IsRetired { get; set; }
 

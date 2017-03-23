@@ -1,11 +1,11 @@
 ﻿namespace CoreApiTest.ViewModels
 {
-    public class ViewHero
+    public class HeroViewModel
     {
         /// <summary>
         /// Id for Hero.
         /// </summary>
-        public int HeroId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// The name of a Hero.
         /// </summary>
@@ -14,5 +14,9 @@
         /// Boolean value mapping if a Hero is already retired or not.
         /// </summary>
         public bool IsRetired { get; set; }
+        /// <summary>
+        /// An interger number of Quests reffered to Hero.
+        /// </summary>
+        public int Quests { get; set; }
     }
 }

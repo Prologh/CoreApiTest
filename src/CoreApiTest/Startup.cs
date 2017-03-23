@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreApiTest.Core;
+using CoreApiTest.Data.Context;
+using CoreApiTest.Repositories;
+using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.ViewModels.Mappings;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-
-using CoreApiTest.Repositories;
-using CoreApiTest.Repositories.Abstract;
-using CoreApiTest.Data.Context;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace CoreApiTest
 {
@@ -31,20 +36,47 @@ namespace CoreApiTest
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add database context.
             services.AddDbContext<ApiDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Localhost")));
-            services.AddMvc();
 
+            // Repositories.
             services.AddTransient<IHeroRepository, HeroRepository>();
             services.AddTransient<IQuestRepository, QuestRepository>();
+
+            // Automapper Configuration.
+            AutoMapperConfiguration.Configure();
+
+            // Add MVC services to the services container.
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseStaticFiles();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseStaticFiles();
+            // Add displaying the message of interal errors.
+            app.UseExceptionHandler(
+                builder =>
+                {
+                    builder.Run(
+                    async context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            context.Response.AddApplicationError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                        }
+                    });
+                });
+
+
             app.UseMvc();
         }
     }
