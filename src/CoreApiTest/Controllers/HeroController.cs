@@ -1,13 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using CoreApiTest.Models;
+using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-using CoreApiTest.Models;
-using CoreApiTest.Repositories.Abstract;
-using AutoMapper;
-using CoreApiTest.ViewModels;
 
 namespace CoreApiTest.Controllers
 {
@@ -25,9 +24,6 @@ namespace CoreApiTest.Controllers
         [HttpGet(Name = "GetAllHeroes")]
         public async Task<IActionResult> GetAll()
         {
-            //return await _heroItems.AllIncluding(h => h.Quests)
-            //return await _heroItems.GetAll();
-
             var heroList = await _heroItems.AllIncluding(h => h.Quests);
             var heroListVM = Mapper.Map<IEnumerable<Hero>, IEnumerable<HeroViewModel>>(heroList);
             return new OkObjectResult(heroListVM);
@@ -37,26 +33,26 @@ namespace CoreApiTest.Controllers
         [HttpGet("{id}", Name = "GetHeroById")]
         public async Task<IActionResult> GetById(int id)
         {
-            var item = await _heroItems.GetSingle(id);
-            //var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
-            if (item == null)
+            var hero = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
+            if (hero == null)
             {
                 return new NotFoundResult();
             }
-            return new ObjectResult(item);
+            var heroVM = Mapper.Map<Hero, HeroViewModel>(hero);
+            return new ObjectResult(heroVM);
         }
 
         // GET api/<controller>/{id}/quest
         [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
         public async Task<IActionResult> GetAllHeroQuests(int id)
         {
-            //var item = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
-            var item = await _heroItems.GetSingle(id);
-            if (item == null)
+            var hero = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
+            if (hero == null)
             {
                 return new NotFoundResult();
             }
-            return new ObjectResult(item.Quests);
+            var heroVM = Mapper.Map<IEnumerable<Quest>, IEnumerable<QuestViewModel>>(hero.Quests);
+            return new ObjectResult(heroVM);
         }
 
         // POST api/<controller>
@@ -74,8 +70,11 @@ namespace CoreApiTest.Controllers
             };
             _heroItems.Add(newHero);
             await _heroItems.Commit();
-            return CreatedAtRoute("GetHeroById",
-                new { controller = "Hero", id = item.Id }, newHero);
+
+            var newHeroVM = Mapper.Map<Hero, HeroViewModel>(newHero);
+
+            return new CreatedAtRouteResult("GetHeroById",
+                new { controller = "Hero", id = item.Id }, newHeroVM);
         }
 
         // PUT api/<controller>
@@ -86,31 +85,31 @@ namespace CoreApiTest.Controllers
             {
                 return new BadRequestResult();
             }
-            var hero = await _heroItems.GetSingle(id);
-            if (hero == null)
+            var heroDb = await _heroItems.GetSingle(id);
+            if (heroDb == null)
             {
                 return new NotFoundResult();
             }
-            hero.Name = item.Name;
-            hero.IsRetired = item.IsRetired;
+            heroDb.Name = item.Name;
+            heroDb.IsRetired = item.IsRetired;
 
-            _heroItems.Update(hero);
+            _heroItems.Update(heroDb);
             await _heroItems.Commit();
-            return Ok();
+            return new OkResult();
         }
 
         // DELETE api/<controller>/{id}
         [HttpDelete("{id}", Name = "DeleteHero")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _heroItems.GetSingle(id);
-            if (item == null)
+            var heroDb = await _heroItems.GetSingle(id);
+            if (heroDb == null)
             {
                 return new NotFoundResult();
             }
-            _heroItems.Delete(item);
+            _heroItems.Delete(heroDb);
             await _heroItems.Commit();
-            return Ok();
+            return new OkResult();
         }
     }
 }

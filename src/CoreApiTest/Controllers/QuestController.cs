@@ -1,13 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using CoreApiTest.Models;
+using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
-using CoreApiTest.Models;
-using CoreApiTest.Repositories.Abstract;
-using AutoMapper;
-using CoreApiTest.ViewModels;
 
 namespace CoreApiTest.Controllers
 {
@@ -25,10 +24,7 @@ namespace CoreApiTest.Controllers
         [HttpGet(Name = "GetAllQuestes")]
         public async Task<IActionResult> GetAll()
         {
-            //return await _questItems.GetAll();
-            //return await _questItems.AllIncluding(q => q.Hero);
-
-            var questList = await _questItems.GetAll();
+            var questList = await _questItems.AllIncluding(q => q.Hero);
             var questListVM = Mapper.Map<IEnumerable<Quest>, IEnumerable<QuestViewModel>>(questList);
             return new OkObjectResult(questListVM);
         }
@@ -37,13 +33,26 @@ namespace CoreApiTest.Controllers
         [HttpGet("{id}", Name = "GetQuestById")]
         public async Task<IActionResult> GetById(int id)
         {
-            //var item = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
-            var item = await _questItems.GetSingle(id);
-            if (item == null)
+            var quest = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
+            if (quest == null)
             {
                 return new NotFoundResult();
             }
-            return new ObjectResult(item);
+            var questVM = Mapper.Map<Quest, QuestViewModel>(quest);
+            return new ObjectResult(questVM);
+        }
+
+        // GET api/<controller>/{id}/hero
+        [HttpGet("{id}/hero", Name = "GetQuestOwner")]
+        public async Task<IActionResult> GetQuestOwner(int id)
+        {
+            var quest = await _questItems.GetSingle(q => q.Id == id, q => q.Hero);
+            if (quest == null)
+            {
+                return new NotFoundResult();
+            }
+            return new RedirectToRouteResult("GetHeroById",
+                new { controller = "Hero", id = quest.HeroId });
         }
 
         // POST api/<controller>
@@ -62,8 +71,11 @@ namespace CoreApiTest.Controllers
             };
              _questItems.Add(newQuest);
             await _questItems.Commit();
+
+            var newQuestVM = Mapper.Map<Quest, QuestViewModel>(newQuest);
+
             return new CreatedAtRouteResult("GetQuestById",
-                new { controller = "Quest", id = item.Id }, newQuest);
+                new { controller = "Quest", id = item.Id }, newQuestVM);
         }
 
         // PUT api/<controller>
@@ -92,12 +104,12 @@ namespace CoreApiTest.Controllers
         [HttpDelete("{id}", Name = "DeleteQuest")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _questItems.GetSingle(id);
-            if (item == null)
+            var quest = await _questItems.GetSingle(id);
+            if (quest == null)
             {
                 return new NotFoundResult();
             }
-            _questItems.Delete(item);
+            _questItems.Delete(quest);
             await _questItems.Commit();
             return new OkResult();
         }

@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using CoreApiTest.Repositories.Abstract;
+﻿using CoreApiTest.Data.Context;
 using CoreApiTest.Models;
-using CoreApiTest.Data.Context;
+using CoreApiTest.Repositories.Abstract;
+using CoreApiTest.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using CoreApiTest.Services;
 
 namespace CoreApiTest.Repositories
 {
