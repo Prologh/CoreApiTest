@@ -1,0 +1,15 @@
+﻿body {
+  background-color: DarkOrange; }
+
+p {
+  font-size: 30px; }
+  p:hover {
+    font-size: 40px; }
+
+button {
+  color: white;
+  background: black; }
+
+h4 {
+  color: DarkOrange; }
+

@@ -1,0 +1,22 @@
+﻿$accent: DarkOrange;
+$input-background: $accent;
+
+body {
+    background-color: $accent;
+}
+
+p {
+    font-size: 30px;
+    &:hover{
+        font-size: 40px;
+    }
+}
+
+button {
+    color: white;
+    background: black;
+}
+
+h4 {
+    color: $accent;
+}
