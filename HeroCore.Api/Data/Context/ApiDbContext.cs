@@ -10,7 +10,7 @@ namespace HeroCore.Api.Data.Context
 {
     public class ApiDbContext : DbContext
     {
-        public DbSet<Models.Hero> HeroItems { get; set; }
+        public DbSet<Hero> HeroItems { get; set; }
         public DbSet<Quest> QuestItems { get; set; }
 
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) { }
