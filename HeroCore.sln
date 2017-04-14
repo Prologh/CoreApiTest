@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{39A64F7E-AD3A-4526-AEB3-5132812703A8}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroCore.Api", "HeroCore.Api\HeroCore.Api.csproj", "{673CDC5E-4600-4283-8EFB-12A48CEEBD85}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Api", "HeroCore.Api\Api.xproj", "{673CDC5E-4600-4283-8EFB-12A48CEEBD85}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebApp", "HeroCore.WebApp\WebApp.xproj", "{8ABD42A3-9E7C-4397-8FA7-A8833AE5C305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroCore.WebApp", "HeroCore.WebApp\HeroCore.WebApp.csproj", "{8ABD42A3-9E7C-4397-8FA7-A8833AE5C305}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
