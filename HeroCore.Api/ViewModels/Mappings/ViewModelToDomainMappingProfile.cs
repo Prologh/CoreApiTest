@@ -5,10 +5,15 @@ namespace HeroCore.Api.ViewModels.Mappings
 {
     public class ViewModelToDomainMappingProfile : Profile
     {
-        protected override void Configure()
+        public override string ProfileName
         {
-            Mapper.CreateMap<HeroViewModel, Hero>();
-            Mapper.CreateMap<QuestViewModel, Quest>();
+            get { return "ViewModelToDomainMappings"; }
+        }
+
+        public ViewModelToDomainMappingProfile()
+        {
+            CreateMap<HeroViewModel, Hero>();
+            CreateMap<QuestViewModel, Quest>();
         }
     }
 }

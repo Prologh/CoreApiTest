@@ -5,7 +5,7 @@ using HeroCore.Api.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace HeroCore.Api.Controllers
@@ -13,24 +13,15 @@ namespace HeroCore.Api.Controllers
     [Route("api/[controller]")]
     public class HeroController : Controller
     {
+        private IHeroRepository _heroItems { get; set; }
 
         public HeroController(IHeroRepository heroItems)
         {
             _heroItems = heroItems;
         }
-        private IHeroRepository _heroItems { get; set; }
-
-        // GET api/<controller>
-        [HttpGet(Name = "GetAllHeroes")]
-        public async Task<IActionResult> GetAll()
-        {
-            var heroList = await _heroItems.AllIncluding(h => h.Quests);
-            var heroListVM = Mapper.Map<IEnumerable<Hero>, IEnumerable<HeroViewModel>>(heroList);
-            return new OkObjectResult(heroListVM);
-        }
 
         // GET api/<controller>/{id}
-        [HttpGet("{id}", Name = "GetHeroById")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var hero = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
@@ -43,7 +34,7 @@ namespace HeroCore.Api.Controllers
         }
 
         // GET api/<controller>/{id}/quest
-        [HttpGet("{id}/quest", Name = "GetAllHeroQuests")]
+        [HttpGet("{id}/quest")]
         public async Task<IActionResult> GetAllHeroQuests(int id)
         {
             var hero = await _heroItems.GetSingle(h => h.Id == id, h => h.Quests);
@@ -56,7 +47,7 @@ namespace HeroCore.Api.Controllers
         }
 
         // POST api/<controller>
-        [HttpPost(Name = "CreateHero")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] Hero item)
         {
             if (!ModelState.IsValid || item == null)
@@ -78,7 +69,7 @@ namespace HeroCore.Api.Controllers
         }
 
         // PUT api/<controller>
-        [HttpPut("{id}", Name = "UpdateHero")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Hero item)
         {
             if (!ModelState.IsValid || item == null)
@@ -99,7 +90,7 @@ namespace HeroCore.Api.Controllers
         }
 
         // DELETE api/<controller>/{id}
-        [HttpDelete("{id}", Name = "DeleteHero")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var heroDb = await _heroItems.GetSingle(id);

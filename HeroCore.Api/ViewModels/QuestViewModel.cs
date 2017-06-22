@@ -14,6 +14,7 @@
         /// A boolean value deciding if a Quest was completed or not.
         /// </summary>
         public bool IsCompleted { get; set; }
+
         /// <summary>
         /// Integer foreign key of Hero for Quest.
         /// </summary>

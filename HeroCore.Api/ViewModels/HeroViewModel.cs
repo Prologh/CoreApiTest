@@ -14,6 +14,7 @@
         /// Boolean value mapping if a Hero is already retired or not.
         /// </summary>
         public bool IsRetired { get; set; }
+
         /// <summary>
         /// An interger number of Quests reffered to HeroCore.
         /// </summary>

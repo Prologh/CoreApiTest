@@ -3,9 +3,7 @@ using HeroCore.Api.Models;
 using HeroCore.Api.Repositories.Abstract;
 using HeroCore.Api.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace HeroCore.Api.Controllers

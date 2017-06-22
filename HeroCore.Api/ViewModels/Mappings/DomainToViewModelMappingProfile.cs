@@ -6,12 +6,17 @@ namespace HeroCore.Api.ViewModels.Mappings
 {
     public class DomainToViewModelMappingProfile : Profile
     {
-        protected override void Configure()
+        public override string ProfileName
         {
-            Mapper.CreateMap<Hero, HeroViewModel>()
+            get { return "DomainToViewModelMappings"; }
+        }
+
+        public DomainToViewModelMappingProfile()
+        {
+            CreateMap<Hero, HeroViewModel>()
                 .ForMember(vm => vm.Quests,
-                    map => map.MapFrom(h => h.Quests.Count()));
-            Mapper.CreateMap<Quest, QuestViewModel>();
+                    map => map.MapFrom(h => h.Quests.Count));
+            CreateMap<Quest, QuestViewModel>();
         }
     }
 }

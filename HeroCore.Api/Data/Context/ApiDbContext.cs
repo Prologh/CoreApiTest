@@ -17,13 +17,7 @@ namespace HeroCore.Api.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in modelBuilder
-                .Model
-                .GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+            base.OnModelCreating(modelBuilder);
 
             /* Quest */
             modelBuilder.Entity<Quest>()
@@ -42,6 +36,14 @@ namespace HeroCore.Api.Data.Context
                 .Property(h => h.Name)
                 .HasMaxLength(100)
                 .IsRequired();
+
+            foreach (var relationship in modelBuilder
+                .Model
+                .GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
         }
     }

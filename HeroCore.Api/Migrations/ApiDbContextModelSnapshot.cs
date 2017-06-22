@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using HeroCore.Api.Data.Context;
 
-namespace HeroCore.Api.Migrations
+namespace Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
     partial class ApiDbContextModelSnapshot : ModelSnapshot
@@ -13,10 +13,10 @@ namespace HeroCore.Api.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.1")
+                .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CoreApiTest.Models.Hero", b =>
+            modelBuilder.Entity("HeroCore.Api.Models.Hero", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -25,14 +25,14 @@ namespace HeroCore.Api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasAnnotation("MaxLength", 100);
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
                     b.ToTable("Hero");
                 });
 
-            modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
+            modelBuilder.Entity("HeroCore.Api.Models.Quest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -50,9 +50,9 @@ namespace HeroCore.Api.Migrations
                     b.ToTable("Quest");
                 });
 
-            modelBuilder.Entity("CoreApiTest.Models.Quest", b =>
+            modelBuilder.Entity("HeroCore.Api.Models.Quest", b =>
                 {
-                    b.HasOne("CoreApiTest.Models.Hero", "Hero")
+                    b.HasOne("HeroCore.Api.Models.Hero", "Hero")
                         .WithMany("Quests")
                         .HasForeignKey("HeroId");
                 });
